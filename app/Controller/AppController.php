@@ -33,7 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     //...
 
-    public $components = array(
+      public $components = array(
         'Session',
         'Auth' => array(
             'loginRedirect' => array(
@@ -53,8 +53,17 @@ class AppController extends Controller {
         )
     );
 
+    public function isAuthorized($user) {
+        // Admin can access
+        if (isset($user['role']) && $user['role'] === 'admin') {
+            return true;
+        }
+
+        // others cannot access
+        return false;
+    }
+
     public function beforeFilter() {
         $this->Auth->allow('index', 'view');
     }
-    //...
 }
